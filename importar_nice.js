@@ -101,6 +101,10 @@ async function fetchAll() {
 }
 
 fetchAll().then(rows => {
-  fs.writeFileSync('nice_catalogo.json', JSON.stringify(rows, null, 2), 'utf8');
-  console.log(`\n✓ ${rows.length} filas guardadas en nice_catalogo.json`);
+  // Filtrar productos sin SKU antes de guardar
+  const limpios = rows.filter(r => r.sku);
+  fs.writeFileSync('nice_catalogo.json', JSON.stringify(limpios, null, 2), 'utf8');
+  console.log(`\n✓ ${limpios.length} filas guardadas en nice_catalogo.json`);
+  console.log('\nSiguiente paso: comparar contra la DB');
+  console.log('  node comparar.js');
 }).catch(console.error);
